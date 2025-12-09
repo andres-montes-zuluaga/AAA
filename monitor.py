@@ -296,3 +296,63 @@ def get_file_statistics(directory_path=None):
             "file_stats": "<div class='file-stat-item'>Error analyzing files</div>"
         }
 
+def main():
+    """
+    Main function to orchestrate the monitoring script.
+    Collects all system information and generates the HTML dashboard.
+    """
+    
+    print("=" * 60)
+    print("Challenge Triple A - System Monitoring Dashboard")
+    print("=" * 60)
+    print()
+    
+    # Collect CPU information
+    print("[*] Collecting CPU information...")
+    cpu_data = get_cpu_information()
+    
+    print(f"    CPU Cores: {cpu_data['cpu_cores']}")
+    print(f"    CPU Frequency: {cpu_data['cpu_frequency']}")
+    print(f"    CPU Usage: {cpu_data['cpu_percent']}%")
+    print()
+    
+    # Collect memory information
+    print("[*] Collecting memory information...")
+    memory_data = get_memory_information()
+    
+    print(f"    RAM Total: {memory_data['ram_total']}")
+    print(f"    RAM Used: {memory_data['ram_used']}")
+    print(f"    Memory Usage: {memory_data['memory_percent']}%")
+    print()
+    
+    # Collect system information
+    print("[*] Collecting system information...")
+    system_data = get_system_information()
+    
+    print(f"    Hostname: {system_data['hostname']}")
+    print(f"    Operating System: {system_data['operating_system']}")
+    print(f"    Uptime: {system_data['uptime']}")
+    print(f"    Connected Users: {system_data['user_count']}")
+    print(f"    Primary IP: {system_data['primary_ip']}")
+    print(f"    Load Average: {system_data['load_average_1']}, {system_data['load_average_5']}, {system_data['load_average_15']}")
+    print()
+    
+    # Collect process information
+    print("[*] Collecting process information...")
+    top_processes = get_top_processes()
+    print(f"    Top processes retrieved successfully")
+    print()
+    
+    # Collect file statistics
+    print("[*] Analyzing files...")
+    file_data = get_file_statistics()
+    print(f"    Total files analyzed: {file_data['total_files']}")
+    print(f"    Directory: {file_data['analysis_directory']}")
+    print()
+    
+    # TODO: Load template and substitute variables
+    # TODO: Write output HTML file
+
+
+if __name__ == "__main__":
+    main()
