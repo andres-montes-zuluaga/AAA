@@ -107,6 +107,90 @@ def get_memory_information():
             "memory_status": "green"
         }
 
+def get_system_information():
+    """
+    Collect general system information.
+    
+    Returns:
+        dict: Dictionary containing system metrics
+            - hostname: Machine hostname
+            - operating_system: OS distribution and version
+            - uptime: System uptime in human-readable format
+            - user_count: Number of connected users
+            - primary_ip: Primary IP address
+            - load_average_1: Load average (1 minute)
+            - load_average_5: Load average (5 minutes)
+            - load_average_15: Load average (15 minutes)
+            - timestamp: Current timestamp
+            - generation_date: Current date and time
+    """
+    try:
+        # Get hostname
+        hostname = socket.gethostname()
+        
+        # Get OS information
+        os_name = platform.system()
+        os_version = platform.release()
+        operating_system = f"{os_name} {os_version}"
+        
+        # Calculate uptime
+        boot_time = datetime.fromtimestamp(psutil.boot_time())
+        uptime_delta = datetime.now() - boot_time
+        
+        # Format uptime as days, hours, minutes
+        uptime_days = uptime_delta.days
+        uptime_hours = uptime_delta.seconds // 3600
+        uptime_minutes = (uptime_delta.seconds % 3600) // 60
+        uptime = f"{uptime_days}d {uptime_hours}h {uptime_minutes}m"
+        
+        # Get number of connected users
+        user_count = len(psutil.users())
+        
+        # Get primary IP address
+        try:
+            # Connect to a public DNS server to determine primary IP
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            primary_ip = s.getsockname()[0]
+            s.close()
+        except Exception:
+            primary_ip = "127.0.0.1"
+        
+        # Get load average
+        load_avg = os.getloadavg()
+        
+        # Get current timestamp and generation date
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        generation_date = timestamp
+        
+        return {
+            "hostname": hostname,
+            "operating_system": operating_system,
+            "uptime": uptime,
+            "user_count": user_count,
+            "primary_ip": primary_ip,
+            "load_average_1": f"{load_avg[0]:.2f}",
+            "load_average_5": f"{load_avg[1]:.2f}",
+            "load_average_15": f"{load_avg[2]:.2f}",
+            "timestamp": timestamp,
+            "generation_date": generation_date
+        }
+    
+    except Exception as e:
+        print(f"Error collecting system information: {e}")
+        return {
+            "hostname": "N/A",
+            "operating_system": "N/A",
+            "uptime": "N/A",
+            "user_count": "N/A",
+            "primary_ip": "N/A",
+            "load_average_1": "N/A",
+            "load_average_5": "N/A",
+            "load_average_15": "N/A",
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "generation_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+
 def get_top_processes():
     """
     Get the top 3 processes with highest CPU and memory usage.
