@@ -236,3 +236,63 @@ def get_top_processes():
         print(f"Error collecting process information: {e}")
         return "<tr><td colspan='4'>Error collecting process data</td></tr>"
 
+def get_file_statistics(directory_path=None):
+    """
+    Analyze file types in a specified directory.
+    
+    Args:
+        directory_path: Path to analyze. Defaults to home directory.
+    
+    Returns:
+        dict: Dictionary containing file statistics
+            - total_files: Total number of files analyzed
+            - analysis_directory: Path analyzed
+            - file_stats: HTML with file type distribution
+    """
+    try:
+        # Default to home directory if not specified
+        if directory_path is None:
+            directory_path = str(Path.home())
+        
+        # File extensions to track
+        extensions = ['.txt', '.py', '.pdf', '.jpg']
+        file_counts = {ext: 0 for ext in extensions}
+        total_files = 0
+        
+        # Count files by extension
+        for root, dirs, files in os.walk(directory_path):
+            for file in files:
+                total_files += 1
+                file_ext = Path(file).suffix.lower()
+                if file_ext in file_counts:
+                    file_counts[file_ext] += 1
+        
+        # Avoid division by zero
+        if total_files == 0:
+            total_files = 1
+        
+        # Generate HTML for file statistics
+        file_stats_html = ""
+        for ext, count in file_counts.items():
+            percentage = (count / total_files) * 100
+            file_stats_html += f"""                <div class="file-stat-item">
+                    <div class="extension">{ext}</div>
+                    <div class="count">{count}</div>
+                    <div class="percentage">{percentage:.1f}%</div>
+                </div>
+"""
+        
+        return {
+            "total_files": total_files,
+            "analysis_directory": directory_path,
+            "file_stats": file_stats_html
+        }
+    
+    except Exception as e:
+        print(f"Error analyzing files: {e}")
+        return {
+            "total_files": "0",
+            "analysis_directory": "N/A",
+            "file_stats": "<div class='file-stat-item'>Error analyzing files</div>"
+        }
+
