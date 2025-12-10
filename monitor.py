@@ -146,8 +146,12 @@ def get_system_information():
         uptime_minutes = (uptime_delta.seconds % 3600) // 60
         uptime = f"{uptime_days}d {uptime_hours}h {uptime_minutes}m"
         
-        # Get number of connected users
-        user_count = len(psutil.users())
+        # Get number of connected users (platform-specific)
+        try:
+            user_count = len(psutil.users())
+        except (AttributeError, OSError):
+            # Windows may not support psutil.users() in all configurations
+            user_count = "N/A"
         
         # Get primary IP address
         try:
@@ -159,8 +163,19 @@ def get_system_information():
         except Exception:
             primary_ip = "127.0.0.1"
         
-        # Get load average
-        load_avg = os.getloadavg()
+        # Get load average (not available on Windows)
+        try:
+            load_avg = os.getloadavg()
+            load_average_1 = f"{load_avg[0]:.2f}"
+            load_average_5 = f"{load_avg[1]:.2f}"
+            load_average_15 = f"{load_avg[2]:.2f}"
+        except AttributeError:
+            # Windows doesn't support os.getloadavg()
+            # Use CPU percent as alternative metric
+            cpu_percent = psutil.cpu_percent(interval=0.1)
+            load_average_1 = f"{cpu_percent:.2f}"
+            load_average_5 = "N/A (Windows)"
+            load_average_15 = "N/A (Windows)"
         
         # Get current timestamp and generation date
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -172,9 +187,9 @@ def get_system_information():
             "uptime": uptime,
             "user_count": user_count,
             "primary_ip": primary_ip,
-            "load_average_1": f"{load_avg[0]:.2f}",
-            "load_average_5": f"{load_avg[1]:.2f}",
-            "load_average_15": f"{load_avg[2]:.2f}",
+            "load_average_1": load_average_1,
+            "load_average_5": load_average_5,
+            "load_average_15": load_average_15,
             "timestamp": timestamp,
             "generation_date": generation_date
         }
