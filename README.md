@@ -1,4 +1,4 @@
-8# Challenge Triple A – System Monitoring Dashboard
+# Challenge Triple A – System Monitoring Dashboard
 
 ## Description
 
