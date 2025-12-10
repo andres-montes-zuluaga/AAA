@@ -246,7 +246,7 @@ def get_file_statistics(directory_path=None):
     Analyze file types in a specified directory.
     
     Args:
-        directory_path: Path to analyze. Defaults to home directory.
+        directory_path: Path to analyze. Defaults to sample_data directory.
     
     Returns:
         dict: Dictionary containing file statistics
@@ -255,9 +255,14 @@ def get_file_statistics(directory_path=None):
             - file_stats: HTML with file type distribution
     """
     try:
-        # Default to home directory if not specified
+        # Default to sample_data directory if not specified
         if directory_path is None:
-            directory_path = str(Path.home())
+            directory_path = "sample_data"
+        
+        # Check if directory exists
+        if not os.path.exists(directory_path):
+            print(f"Warning: Directory '{directory_path}' not found. Creating it...")
+            os.makedirs(directory_path, exist_ok=True)
         
         # File extensions to track
         extensions = ['.txt', '.py', '.pdf', '.jpg']
