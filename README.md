@@ -174,6 +174,12 @@ file_data = get_advanced_file_statistics("/path/to/directory")
 - CSS3 with design system
 - ES6+ JavaScript (no external frameworks)
 
+## Screenshots
+<img width="591" height="609" alt="image" src="https://github.com/user-attachments/assets/51a48ae4-e8c1-4aef-9c07-9be674069013" />
+<img width="918" height="545" alt="image" src="https://github.com/user-attachments/assets/3d1d9723-1898-45ee-a819-e1e97f41df08" />
+<img width="571" height="319" alt="image" src="https://github.com/user-attachments/assets/3cd1c2b7-f1bd-450e-b887-178ccb37cd90" />
+
+
 ## Challenges Encountered
 
 ### Windows Compatibility
@@ -232,10 +238,10 @@ file_data = get_advanced_file_statistics("/path/to/directory")
 - **Memory Usage**: Minimal (~20-50 MB)
 - **Browser Load**: <1MB HTML output (lightweight)
 
-## Author
+## Authors
 
-Andrés MONTES ZULUAGA - Loick MICHEL - Adrien MEINIER
-Date: December 10, 2025
+Andrés MONTES ZULUAGA - Loick MICHEL - Adrien MEINIER  
+Date: December 10, 2025  
 Version: 1.0.0
 
 ## License
