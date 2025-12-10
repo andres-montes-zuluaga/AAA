@@ -1,4 +1,4 @@
-# Challenge Triple A – System Monitoring Dashboard
+8# Challenge Triple A – System Monitoring Dashboard
 
 ## Description
 
@@ -79,7 +79,7 @@ Open `index.html` in your web browser.
 
 ## Author
 
-Loick - Adrien - Adrien
+Loick - Adrien - Andrés
 
 ---
 
