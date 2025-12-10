@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Challenge Triple A - System Monitoring Dashboard">
+    <meta http-equiv="refresh" content="30">
+    <title>System Monitoring Dashboard</title>
+    <link rel="stylesheet" href="template.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>System Monitoring Dashboard</h1>
+            <p class="timestamp">Last updated: {{ timestamp }}</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- System Information Section -->
+        <section class="system-section">
+            <h2>System Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Hostname:</label>
+                    <span>{{ hostname }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Operating System:</label>
+                    <span>{{ operating_system }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Uptime:</label>
+                    <span>{{ uptime }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Connected Users:</label>
+                    <span>{{ user_count }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CPU Section -->
+        <section class="cpu-section">
+            <h2>CPU Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>CPU Cores:</label>
+                    <span>{{ cpu_cores }}</span>
+                </div>
+                <div class="info-item">
+                    <label>CPU Frequency:</label>
+                    <span>{{ cpu_frequency }}</span>
+                </div>
+                <div class="info-item">
+                    <label>CPU Usage:</label>
+                    <span class="status-{{ cpu_status }}">{{ cpu_percent }}%</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <label>CPU Utilization Progress:</label>
+                <div class="progress-bar">
+                    <div class="progress-fill status-{{ cpu_status }}" style="width: {{ cpu_percent }}%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Memory Section -->
+        <section class="memory-section">
+            <h2>Memory Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>RAM Total:</label>
+                    <span>{{ ram_total }}</span>
+                </div>
+                <div class="info-item">
+                    <label>RAM Used:</label>
+                    <span>{{ ram_used }}</span>
+                </div>
+                <div class="info-item">
+                    <label>RAM Usage:</label>
+                    <span class="status-{{ memory_status }}">{{ memory_percent }}%</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <label>Memory Utilization Progress:</label>
+                <div class="progress-bar">
+                    <div class="progress-fill status-{{ memory_status }}" style="width: {{ memory_percent }}%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Network Section -->
+        <section class="network-section">
+            <h2>Network Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Primary IP Address:</label>
+                    <span>{{ primary_ip }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Processes Section -->
+        <section class="processes-section">
+            <h2>Top 3 Resource-Hungry Processes</h2>
+            <div class="table-container">
+                <table class="processes-table">
+                    <thead>
+                        <tr>
+                            <th>Process Name</th>
+                            <th>PID</th>
+                            <th>CPU %</th>
+                            <th>Memory %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ top_processes }}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- File Analysis Section -->
+        <section class="files-section">
+            <h2>File Analysis</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Total Files:</label>
+                    <span>{{ total_files }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Analysis Directory:</label>
+                    <span>{{ analysis_directory }}</span>
+                </div>
+            </div>
+            <div class="file-stats-container">
+                <h3>File Type Distribution</h3>
+                <div class="file-stats-grid">
+                    {{ file_stats }}
+                </div>
+            </div>
+        </section>
+
+        <!-- Load Average Section (Advanced) -->
+        <section class="load-section">
+            <h2>System Load</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Load Average (1 min):</label>
+                    <span>{{ load_average_1 }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Load Average (5 min):</label>
+                    <span>{{ load_average_5 }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Load Average (15 min):</label>
+                    <span>{{ load_average_15 }}</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Challenge Triple A - System Monitoring Dashboard</p>
+        <p>Generated by monitor.py | <time>{{ generation_date }}</time></p>
+    </footer>
+</body>
+</html>
