@@ -265,7 +265,7 @@ def get_file_statistics(directory_path=None):
             os.makedirs(directory_path, exist_ok=True)
         
         # File extensions to track
-        extensions = ['.txt', '.py', '.pdf', '.jpg']
+        extensions = ['.txt', '.py', '.pdf', '.png']
         file_counts = {ext: 0 for ext in extensions}
         total_files = 0
         
