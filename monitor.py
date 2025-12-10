@@ -17,7 +17,7 @@ from pathlib import Path
 
 def get_cpu_information():
     """
-    Collect CPU-related information.
+    Collect CPU-related information including per-core utilization.
     
     Returns:
         dict: Dictionary containing CPU metrics
@@ -25,6 +25,7 @@ def get_cpu_information():
             - cpu_frequency: CPU frequency in MHz
             - cpu_percent: CPU utilization percentage
             - cpu_status: Status level (green/orange/red) based on utilization
+            - cpu_per_core: HTML table with per-core utilization
     """
     try:
         # Get number of physical CPU cores
@@ -37,7 +38,7 @@ def get_cpu_information():
         else:
             cpu_frequency = "N/A"
         
-        # Get CPU usage percentage
+        # Get CPU usage percentage (overall)
         cpu_percent = psutil.cpu_percent(interval=1)
         
         # Determine status color based on utilization
@@ -48,11 +49,33 @@ def get_cpu_information():
         else:
             cpu_status = "red"
         
+        # Get per-core/thread CPU utilization
+        per_cpu_percent = psutil.cpu_percent(interval=1, percpu=True)
+        
+        # Generate HTML table for per-core utilization
+        cpu_per_core_html = ""
+        for core_index, core_percent in enumerate(per_cpu_percent, 1):
+            # Determine color for each core
+            if core_percent <= 50:
+                core_status = "green"
+            elif core_percent <= 80:
+                core_status = "orange"
+            else:
+                core_status = "red"
+            
+            cpu_per_core_html += f"""                        <tr>
+                            <td>Core {core_index}</td>
+                            <td class="status-{core_status}">{core_percent:.1f}%</td>
+                            <td><div class="progress-bar"><div class="progress-fill status-{core_status}" style="width: {core_percent}%"></div></div></td>
+                        </tr>
+"""
+        
         return {
             "cpu_cores": cpu_cores,
             "cpu_frequency": cpu_frequency,
             "cpu_percent": f"{cpu_percent:.1f}",
-            "cpu_status": cpu_status
+            "cpu_status": cpu_status,
+            "cpu_per_core": cpu_per_core_html
         }
     
     except Exception as e:
@@ -61,7 +84,8 @@ def get_cpu_information():
             "cpu_cores": "N/A",
             "cpu_frequency": "N/A",
             "cpu_percent": "0",
-            "cpu_status": "green"
+            "cpu_status": "green",
+            "cpu_per_core": "<tr><td colspan='3'>CPU per-core data unavailable</td></tr>"
         }
 
 

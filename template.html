@@ -73,6 +73,22 @@
                     <canvas id="cpu-gauge"></canvas>
                 </div>
             </div>
+            <!-- Per-Core CPU Utilization Table -->
+            <div class="table-container">
+                <h3>Per-Core Utilization</h3>
+                <table class="processes-table">
+                    <thead>
+                        <tr>
+                            <th>Core</th>
+                            <th>Usage</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ cpu_per_core }}
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- Memory Section -->
