@@ -1339,3 +1339,56 @@ select:focus-visible,
 textarea:focus-visible {
     box-shadow: var(--focus-ring);
 }
+
+/* ============================================
+   GAUGE VISUALIZATION STYLES
+   ============================================ */
+
+.gauge-container {
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-md);
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.gauge-container h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+#cpu-gauge-wrapper,
+#memory-gauge-wrapper {
+    display: inline-block;
+    margin: 0 auto;
+}
+
+/* Responsive gauge sizing */
+@media (max-width: 768px) {
+    #cpu-gauge-wrapper,
+    #memory-gauge-wrapper {
+        width: 200px !important;
+        height: 200px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .gauge-container {
+        padding: var(--space-16);
+    }
+
+    #cpu-gauge-wrapper,
+    #memory-gauge-wrapper {
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+    .gauge-container h3 {
+        font-size: var(--font-size-base);
+        margin-bottom: var(--space-12);
+    }
+}
