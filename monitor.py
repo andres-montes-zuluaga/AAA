@@ -349,6 +349,24 @@ def substitute_variables(template_content, variables_dict):
         print(f"Error substituting variables: {e}")
         return template_content
 
+def write_html_file(html_content, output_path="index.html"):
+    """
+    Write the rendered HTML content to a file.
+    
+    Args:
+        html_content: The HTML content to write
+        output_path: Path where the HTML file will be saved
+    
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        return True
+    except Exception as e:
+        print(f"Error writing HTML file: {e}")
+        return False
 
 def main():
     """
