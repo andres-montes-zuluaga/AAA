@@ -14,6 +14,7 @@ import socket
 from datetime import datetime
 from pathlib import Path
 
+
 def get_cpu_information():
     """
     Collect CPU-related information.
@@ -63,6 +64,7 @@ def get_cpu_information():
             "cpu_status": "green"
         }
 
+
 def get_memory_information():
     """
     Collect memory-related information.
@@ -106,6 +108,7 @@ def get_memory_information():
             "memory_percent": "0",
             "memory_status": "green"
         }
+
 
 def get_system_information():
     """
@@ -191,6 +194,7 @@ def get_system_information():
             "generation_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
+
 def get_top_processes():
     """
     Get the top 3 processes with highest CPU and memory usage.
@@ -235,6 +239,7 @@ def get_top_processes():
     except Exception as e:
         print(f"Error collecting process information: {e}")
         return "<tr><td colspan='4'>Error collecting process data</td></tr>"
+
 
 def get_file_statistics(directory_path=None):
     """
@@ -296,6 +301,28 @@ def get_file_statistics(directory_path=None):
             "file_stats": "<div class='file-stat-item'>Error analyzing files</div>"
         }
 
+
+def load_template(template_path="template.html"):
+    """
+    Load the HTML template file.
+    
+    Args:
+        template_path: Path to the template file
+    
+    Returns:
+        str: Content of the template file, or empty string if not found
+    """
+    try:
+        with open(template_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"Error: Template file '{template_path}' not found")
+        return ""
+    except Exception as e:
+        print(f"Error loading template: {e}")
+        return ""
+
+
 def main():
     """
     Main function to orchestrate the monitoring script.
@@ -350,8 +377,49 @@ def main():
     print(f"    Directory: {file_data['analysis_directory']}")
     print()
     
-    # TODO: Load template and substitute variables
-    # TODO: Write output HTML file
+    # Load template
+    print("[*] Loading template...")
+    template = load_template()
+    
+    if not template:
+        print("Error: Could not load template. Exiting.")
+        return
+    
+    print("    Template loaded successfully")
+    print()
+    
+    # Combine all data into a single dictionary
+    print("[*] Preparing variables for substitution...")
+    all_variables = {
+        **cpu_data,
+        **memory_data,
+        **system_data,
+        "top_processes": top_processes,
+        **file_data
+    }
+    
+    print(f"    Total variables to substitute: {len(all_variables)}")
+    print()
+    
+    # Substitute variables
+    print("[*] Substituting variables in template...")
+    html_output = substitute_variables(template, all_variables)
+    
+    print("    Variables substituted successfully")
+    print()
+    
+    # Write output HTML file
+    print("[*] Writing HTML file...")
+    success = write_html_file(html_output)
+    
+    if success:
+        print("    HTML file generated successfully: index.html")
+        print()
+        print("=" * 60)
+        print("Dashboard ready! Open index.html in your browser.")
+        print("=" * 60)
+    else:
+        print("Error: Failed to write HTML file")
 
 
 if __name__ == "__main__":
