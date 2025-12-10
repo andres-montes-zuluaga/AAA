@@ -21,7 +21,7 @@ A lightweight, real-time system monitoring dashboard that combines Linux adminis
 
 ### Clone the repository
 ```bash
-git clone https://github.com/nombre-apellido/AAA.git
+git clone https://github.com/andres-montes-zuluaga/AAA.git
 cd AAA
 ```
 

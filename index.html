@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Challenge Triple A - System Monitoring Dashboard">
-    <!-- Auto-refresh every 30 seconds to show latest metrics -->
     <meta http-equiv="refresh" content="30">
     <title>System Monitoring Dashboard</title>
     <link rel="stylesheet" href="template.css">
@@ -13,7 +12,7 @@
     <header>
         <div class="header-content">
             <h1>System Monitoring Dashboard</h1>
-            <p class="timestamp">Last updated: {{ timestamp }}</p>
+            <p class="timestamp">Last updated: 2025-12-10 11:14:27</p>
         </div>
     </header>
 
@@ -24,19 +23,19 @@
             <div class="info-grid">
                 <div class="info-item">
                     <label>Hostname:</label>
-                    <span>{{ hostname }}</span>
+                    <span>N/A</span>
                 </div>
                 <div class="info-item">
                     <label>Operating System:</label>
-                    <span>{{ operating_system }}</span>
+                    <span>N/A</span>
                 </div>
                 <div class="info-item">
                     <label>Uptime:</label>
-                    <span>{{ uptime }}</span>
+                    <span>N/A</span>
                 </div>
                 <div class="info-item">
                     <label>Connected Users:</label>
-                    <span>{{ user_count }}</span>
+                    <span>N/A</span>
                 </div>
             </div>
         </section>
@@ -47,21 +46,21 @@
             <div class="info-grid">
                 <div class="info-item">
                     <label>CPU Cores:</label>
-                    <span>{{ cpu_cores }}</span>
+                    <span>4</span>
                 </div>
                 <div class="info-item">
                     <label>CPU Frequency:</label>
-                    <span>{{ cpu_frequency }}</span>
+                    <span>2100 MHz</span>
                 </div>
                 <div class="info-item">
                     <label>CPU Usage:</label>
-                    <span class="status-{{ cpu_status }}">{{ cpu_percent }}%</span>
+                    <span class="status-green">8.3%</span>
                 </div>
             </div>
             <div class="progress-container">
                 <label>CPU Utilization Progress:</label>
                 <div class="progress-bar">
-                    <div class="progress-fill status-{{ cpu_status }}" style="width: {{ cpu_percent }}%"></div>
+                    <div class="progress-fill status-green" style="width: 8.3%"></div>
                 </div>
             </div>
         </section>
@@ -72,21 +71,21 @@
             <div class="info-grid">
                 <div class="info-item">
                     <label>RAM Total:</label>
-                    <span>{{ ram_total }}</span>
+                    <span>9.89 GB</span>
                 </div>
                 <div class="info-item">
                     <label>RAM Used:</label>
-                    <span>{{ ram_used }}</span>
+                    <span>7.42 GB</span>
                 </div>
                 <div class="info-item">
                     <label>RAM Usage:</label>
-                    <span class="status-{{ memory_status }}">{{ memory_percent }}%</span>
+                    <span class="status-orange">75.0%</span>
                 </div>
             </div>
             <div class="progress-container">
                 <label>Memory Utilization Progress:</label>
                 <div class="progress-bar">
-                    <div class="progress-fill status-{{ memory_status }}" style="width: {{ memory_percent }}%"></div>
+                    <div class="progress-fill status-orange" style="width: 75.0%"></div>
                 </div>
             </div>
         </section>
@@ -97,7 +96,7 @@
             <div class="info-grid">
                 <div class="info-item">
                     <label>Primary IP Address:</label>
-                    <span>{{ primary_ip }}</span>
+                    <span>N/A</span>
                 </div>
             </div>
         </section>
@@ -116,7 +115,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{ top_processes }}
+                                                <tr>
+                            <td>Code.exe</td>
+                            <td>16204</td>
+                            <td>0.0%</td>
+                            <td>4.3%</td>
+                        </tr>
+                        <tr>
+                            <td>Code.exe</td>
+                            <td>2416</td>
+                            <td>0.0%</td>
+                            <td>4.1%</td>
+                        </tr>
+                        <tr>
+                            <td>comet.exe</td>
+                            <td>13444</td>
+                            <td>0.0%</td>
+                            <td>3.6%</td>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -128,17 +145,37 @@
             <div class="info-grid">
                 <div class="info-item">
                     <label>Total Files:</label>
-                    <span>{{ total_files }}</span>
+                    <span>22</span>
                 </div>
                 <div class="info-item">
                     <label>Analysis Directory:</label>
-                    <span>{{ analysis_directory }}</span>
+                    <span>sample_data</span>
                 </div>
             </div>
             <div class="file-stats-container">
                 <h3>File Type Distribution</h3>
                 <div class="file-stats-grid">
-                    {{ file_stats }}
+                                    <div class="file-stat-item">
+                    <div class="extension">.txt</div>
+                    <div class="count">0</div>
+                    <div class="percentage">0.0%</div>
+                </div>
+                <div class="file-stat-item">
+                    <div class="extension">.py</div>
+                    <div class="count">1</div>
+                    <div class="percentage">4.5%</div>
+                </div>
+                <div class="file-stat-item">
+                    <div class="extension">.pdf</div>
+                    <div class="count">3</div>
+                    <div class="percentage">13.6%</div>
+                </div>
+                <div class="file-stat-item">
+                    <div class="extension">.png</div>
+                    <div class="count">14</div>
+                    <div class="percentage">63.6%</div>
+                </div>
+
                 </div>
             </div>
         </section>
@@ -149,15 +186,15 @@
             <div class="info-grid">
                 <div class="info-item">
                     <label>Load Average (1 min):</label>
-                    <span>{{ load_average_1 }}</span>
+                    <span>N/A</span>
                 </div>
                 <div class="info-item">
                     <label>Load Average (5 min):</label>
-                    <span>{{ load_average_5 }}</span>
+                    <span>N/A</span>
                 </div>
                 <div class="info-item">
                     <label>Load Average (15 min):</label>
-                    <span>{{ load_average_15 }}</span>
+                    <span>N/A</span>
                 </div>
             </div>
         </section>
@@ -166,7 +203,7 @@
 
     <footer>
         <p>Challenge Triple A - System Monitoring Dashboard</p>
-        <p>Generated by monitor.py | <time>{{ generation_date }}</time></p>
+        <p>Generated by monitor.py | <time>2025-12-10 11:14:27</time></p>
     </footer>
 </body>
 </html>
