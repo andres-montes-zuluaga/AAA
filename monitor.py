@@ -3,8 +3,33 @@
 Challenge Triple A - System Monitoring Dashboard
 Main monitoring script that collects system metrics and generates an HTML dashboard.
 
-This script gathers CPU, memory, system, process, and file statistics,
-then renders them into an HTML file using a template.
+This script implements the three "A"s of the Challenge Triple A:
+    - ADMIN: System administration and configuration management
+    - ALGO: Python algorithms for data collection and processing
+    - AFFICHAGE: Web display with HTML5/CSS3 and Gauge.js visualization
+
+Features:
+    - CPU monitoring (overall + per-core utilization)
+    - Memory analysis (RAM usage and percentage)
+    - System information (hostname, OS, uptime, load average)
+    - Network monitoring (primary IP address)
+    - Process tracking (top 3 resource-hungry processes)
+    - Advanced file analysis (10 file types, recursive, disk size, largest files)
+    - Dynamic color coding (green/orange/red based on utilization)
+    - Auto-refresh every 30 seconds
+    - Gauge.js visualization for CPU and memory
+
+Dependencies:
+    - psutil: System and process utilities
+    - Python 3.6+
+
+Usage:
+    python monitor.py
+    # Generates index.html with latest system metrics
+
+Author: Andrés - Loick - Adrien
+Date: 2025-12-10
+Version: 1.0.0
 """
 
 import psutil
