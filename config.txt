@@ -1,0 +1,23 @@
+# Challenge Triple A - Configuration File
+
+# File Analysis Settings
+ANALYSIS_DIRECTORY=sample_data
+TRACK_EXTENSIONS=.txt,.py,.pdf,.jpg,.png,.md,.css,.exe,.json,.html
+LARGEST_FILES_LIMIT=10
+
+# HTML Generation Settings
+OUTPUT_FILE=index.html
+TEMPLATE_FILE=template.html
+STYLESHEET_FILE=template.css
+
+# Refresh Settings
+AUTO_REFRESH_SECONDS=30
+
+# Display Settings
+COLOR_THRESHOLD_WARNING=50
+COLOR_THRESHOLD_CRITICAL=80
+
+# Color Mapping
+COLOR_GREEN=#10b981
+COLOR_ORANGE=#f59e0b
+COLOR_RED=#ef4444
