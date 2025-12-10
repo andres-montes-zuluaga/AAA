@@ -322,6 +322,33 @@ def load_template(template_path="template.html"):
         print(f"Error loading template: {e}")
         return ""
 
+def substitute_variables(template_content, variables_dict):
+    """
+    Replace template variables with actual values.
+    
+    Template variables use the format: {{ variable_name }}
+    
+    Args:
+        template_content: Content of the template with {{ }} placeholders
+        variables_dict: Dictionary with variable names and their values
+    
+    Returns:
+        str: Rendered HTML with variables substituted
+    """
+    try:
+        html_content = template_content
+        
+        # Iterate through all variables and substitute them
+        for variable_name, variable_value in variables_dict.items():
+            placeholder = "{{ " + variable_name + " }}"
+            html_content = html_content.replace(placeholder, str(variable_value))
+        
+        return html_content
+    
+    except Exception as e:
+        print(f"Error substituting variables: {e}")
+        return template_content
+
 
 def main():
     """
