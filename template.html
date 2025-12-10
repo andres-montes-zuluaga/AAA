@@ -175,6 +175,42 @@
             </div>
         </section>
 
+        <!-- Disk Usage by File Type -->
+        <section class="files-section">
+            <h2>Disk Usage by File Type</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Total Size:</label>
+                    <span>{{ total_size_mb }} MB</span>
+                </div>
+            </div>
+            <div class="file-stats-container">
+                <h3>Size Distribution</h3>
+                <div class="file-stats-grid">
+                    {{ file_sizes }}
+                </div>
+            </div>
+        </section>
+
+        <!-- Largest Files -->
+        <section class="files-section">
+            <h2>Top 10 Largest Files</h2>
+            <div class="table-container">
+                <table class="processes-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>File Name</th>
+                            <th>Size (MB)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ largest_files_html }}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <!-- Load Average Section (Advanced) -->
         <section class="load-section">
             <h2>System Load</h2>

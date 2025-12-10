@@ -280,18 +280,20 @@ def get_top_processes():
         return "<tr><td colspan='4'>Error collecting process data</td></tr>"
 
 
-def get_file_statistics(directory_path=None):
+def get_advanced_file_statistics(directory_path=None):
     """
-    Analyze file types in a specified directory.
+    Advanced file analysis with 10 extensions, recursive exploration, and disk size calculation.
     
     Args:
         directory_path: Path to analyze. Defaults to sample_data directory.
     
     Returns:
-        dict: Dictionary containing file statistics
+        dict: Dictionary containing advanced file statistics
             - total_files: Total number of files analyzed
             - analysis_directory: Path analyzed
             - file_stats: HTML with file type distribution
+            - total_size_mb: Total size of analyzed files in MB
+            - file_sizes: HTML with size per file type
     """
     try:
         # Default to sample_data directory if not specified
@@ -303,38 +305,82 @@ def get_file_statistics(directory_path=None):
             print(f"Warning: Directory '{directory_path}' not found. Creating it...")
             os.makedirs(directory_path, exist_ok=True)
         
-        # File extensions to track
-        extensions = ['.txt', '.py', '.pdf', '.png']
-        file_counts = {ext: 0 for ext in extensions}
-        total_files = 0
+        # 10 file extensions to track with descriptions
+        extensions = {
+            '.txt': 'Text Documents',
+            '.py': 'Python Scripts',
+            '.pdf': 'PDF Documents',
+            '.jpg': 'JPEG Images',
+            '.png': 'PNG Images',
+            '.md': 'Markdown Files',
+            '.css': 'Stylesheets',
+            '.exe': 'Executables',
+            '.json': 'JSON Files',
+            '.html': 'HTML Pages'
+        }
         
-        # Count files by extension
+        file_counts = {ext: 0 for ext in extensions}
+        file_sizes = {ext: 0 for ext in extensions}  # Size in bytes
+        total_files = 0
+        total_size_bytes = 0
+        
+        # Recursively walk through all subdirectories
         for root, dirs, files in os.walk(directory_path):
             for file in files:
                 total_files += 1
+                file_path = os.path.join(root, file)
                 file_ext = Path(file).suffix.lower()
+                
+                # Get file size in bytes
+                try:
+                    file_size = os.path.getsize(file_path)
+                    total_size_bytes += file_size
+                except OSError:
+                    file_size = 0
+                
+                # Count and accumulate size for each extension
                 if file_ext in file_counts:
                     file_counts[file_ext] += 1
+                    file_sizes[file_ext] += file_size
         
         # Avoid division by zero
         if total_files == 0:
             total_files = 1
         
-        # Generate HTML for file statistics
+        # Convert total size to MB
+        total_size_mb = total_size_bytes / (1024 * 1024)
+        
+        # Generate HTML for file statistics with sizes
         file_stats_html = ""
+        file_sizes_html = ""
+        
         for ext, count in file_counts.items():
             percentage = (count / total_files) * 100
+            size_bytes = file_sizes[ext]
+            size_mb = size_bytes / (1024 * 1024)
+            
+            # File type distribution
             file_stats_html += f"""                <div class="file-stat-item">
                     <div class="extension">{ext}</div>
                     <div class="count">{count}</div>
                     <div class="percentage">{percentage:.1f}%</div>
                 </div>
 """
+            
+            # File size per type
+            file_sizes_html += f"""                <div class="file-stat-item">
+                    <div class="extension">{ext}</div>
+                    <div class="count">{size_mb:.2f} MB</div>
+                    <div class="percentage">{(size_mb/total_size_mb*100):.1f}% of total</div>
+                </div>
+"""
         
         return {
             "total_files": total_files,
             "analysis_directory": directory_path,
-            "file_stats": file_stats_html
+            "file_stats": file_stats_html,
+            "total_size_mb": f"{total_size_mb:.2f}",
+            "file_sizes": file_sizes_html
         }
     
     except Exception as e:
@@ -342,7 +388,72 @@ def get_file_statistics(directory_path=None):
         return {
             "total_files": "0",
             "analysis_directory": "N/A",
-            "file_stats": "<div class='file-stat-item'>Error analyzing files</div>"
+            "file_stats": "<div class='file-stat-item'>Error analyzing files</div>",
+            "total_size_mb": "0.00",
+            "file_sizes": "<div class='file-stat-item'>Error calculating sizes</div>"
+        }
+
+
+def get_largest_files(directory_path=None, limit=10):
+    """
+    Identify the largest files in the specified directory.
+    
+    Args:
+        directory_path: Path to analyze. Defaults to sample_data directory.
+        limit: Number of largest files to return (default 10)
+    
+    Returns:
+        dict: Dictionary containing largest files information
+            - largest_files_html: HTML table with top largest files
+    """
+    try:
+        if directory_path is None:
+            directory_path = "sample_data"
+        
+        if not os.path.exists(directory_path):
+            return {
+                "largest_files_html": "<tr><td colspan='3'>Directory not found</td></tr>"
+            }
+        
+        # Collect all files with their sizes
+        file_list = []
+        
+        for root, dirs, files in os.walk(directory_path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                try:
+                    file_size = os.path.getsize(file_path)
+                    file_list.append({
+                        'name': file,
+                        'path': file_path,
+                        'size': file_size,
+                        'size_mb': file_size / (1024 * 1024)
+                    })
+                except OSError:
+                    continue
+        
+        # Sort by size descending and get top limit
+        file_list.sort(key=lambda x: x['size'], reverse=True)
+        top_files = file_list[:limit]
+        
+        # Generate HTML table
+        largest_files_html = ""
+        for rank, file_info in enumerate(top_files, 1):
+            largest_files_html += f"""                        <tr>
+                            <td>{rank}</td>
+                            <td>{file_info['name']}</td>
+                            <td>{file_info['size_mb']:.2f} MB</td>
+                        </tr>
+"""
+        
+        return {
+            "largest_files_html": largest_files_html if largest_files_html else "<tr><td colspan='3'>No files found</td></tr>"
+        }
+    
+    except Exception as e:
+        print(f"Error analyzing largest files: {e}")
+        return {
+            "largest_files_html": f"<tr><td colspan='3'>Error: {str(e)}</td></tr>"
         }
 
 
@@ -459,9 +570,13 @@ def main():
     print(f"    Top processes retrieved successfully")
     print()
     
-    # Collect file statistics
-    print("[*] Analyzing files...")
-    file_data = get_file_statistics()
+    # Collect advanced file statistics
+    print("[*] Analyzing files (10 extensions, recursive, with sizes)...")
+    file_data = get_advanced_file_statistics()
+    
+    # Get largest files
+    print("[*] Identifying largest files...")
+    largest_files_data = get_largest_files()
     print(f"    Total files analyzed: {file_data['total_files']}")
     print(f"    Directory: {file_data['analysis_directory']}")
     print()
@@ -484,7 +599,8 @@ def main():
         **memory_data,
         **system_data,
         "top_processes": top_processes,
-        **file_data
+        **file_data,
+        **largest_files_data
     }
     
     print(f"    Total variables to substitute: {len(all_variables)}")
